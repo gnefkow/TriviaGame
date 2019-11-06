@@ -4,34 +4,64 @@
     var mainTextEL = document.getElementById(`mainText`);
     var startButtonEL = document.getElementById(`startButton`);
     var questionChoices = document.getElementById(`questionChoices`);
+    var timerEL = document.getElementById(`timer`);
+
+//MECHANICS
+  // CLOCK  
+    var intervalID;  
+    var clockRunning = false;
+    var timeLeft;
+    
 
 // Utility Functions:
-function gameTime() {gameOver();};
+  function gameTime() {gameOver();};
+  
+  function runClock() {
+    if (!clockRunning){
+      timeLeft = 10;
+      intervalId = setInterval(countDown, 1000);
+      clockRunning = true;
+    };
+  };
+
+  function stopClock(){ 
+    clearInterval(intervalId);
+    timeLeft = 10;
+  };
+
+  function countDown() {
+    timeLeft--;
+    timerEL.innerHTML = `<h2>${timeLeft}</h2>`;
+    if(timeLeft === 0) {
+      clockRunning = false;
+      stopClock();
+      gameOver();
+    ;}
+  }
+  
+
+  // ----- ----- START THE GAME: ----- ----- //
+  function startGame() { 
+    console.log("START!")
+   // Hide the Start Button:
+      startButtonEL.style.display = "none";
+      runClock();
+      countDown();
+  // Start the Game:
+      displayQuestions();
+  };
 
 
 
 // ---------- ---------- START PAGE ---------- ---------- //
-  function startGame() {
+  function startPage() {
     // Displays Intro Text:
       mainTextEL.innerHTML = "Click to Start Game";
       questionChoices.style.display = "none";
-
-
-    // START BUTTON STARTS THE GAME:
-    startButtonEL.onclick = function() { 
-      console.log("START!")
-     
-     // Hide the Start Button:
-      startButtonEL.style.display = "none";
-
-    //Start the Timer:
-      setTimeout(gameTime, 2000); 
-
-    // Start the Game:
-      displayQuestions();
-      
+    // START BUTTON STARTS THE GAME (calls the startGame function):
+      startButtonEL.onclick = startGame;
     };
-};
+
 
 // ---------- ---------- DISPLAY QUESTIONS ---------- ---------- //
   function displayQuestions() {
@@ -39,7 +69,7 @@ function gameTime() {gameOver();};
       mainTextEL.innerHTML = "Here is the first question";
     // Display answer choices:
       questionChoices.style.display = "block";
-  }
+  };
 
     
     
@@ -68,11 +98,11 @@ function gameTime() {gameOver();};
     //replay Button
     startButtonEL.style.display = "block";
     startButtonEL.innerHTML = "play again";
-  }
+  };
     // function: executes after last question or when the timer is up
     // display sum of correct answers
 
 
 
 // Time to start some shit:
-  startGame();
+  startPage();
