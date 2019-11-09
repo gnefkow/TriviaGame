@@ -7,6 +7,5 @@
 <h1> To Do's </h1>
 <hr>
 <ul>
-  <li>BUG: Repeated clicks logging</li>
-  <li>Add more questions to the Question Bank</li>
   <li>Styling</li>
+  </ul>

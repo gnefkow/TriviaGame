@@ -3,10 +3,13 @@
 //DOM ELEMENTS
     var mainTextEL = document.getElementById(`mainText`);
     var startButtonEL = document.getElementById(`startButton`);
+    var restartButtonEL = document.getElementById(`restartButton`);
+        restartButtonEL.style.display = "none";
     var questionChoicesEL = document.getElementById(`questionChoices`);
     var timerEL = document.getElementById(`timer`);
     var displayScoreEL = document.getElementById(`display-score`);
         displayScoreEL.style.display = "none";
+    
 
 //MECHANICS
 
@@ -131,10 +134,13 @@ function play(){
   displayScoreEL.style.display = "none";
 
 // Set the maximum question number:
-  var lastQuestionPlusOne = questionBank.length;
+  var lastQuestion = questionBank.length-1;
  
 // Show the Questions:
   displayQuestions();
+
+//Set Current Answer:
+      var currentAnswer = questionBank[currentQuestion].correctAnswer;
 
 // User can answer questions:
   function displayQuestions() {
@@ -142,9 +148,7 @@ function play(){
     //Display Question:
       mainTextEL.textContent = questionBank[currentQuestion].question;
 
-    //Set Current Answer:
-      var currentAnswer = questionBank[currentQuestion].correctAnswer;
-      // console.log(`The answer should be: ${currentAnswer}`);
+
 
     // Create Answers in the DOM:
       for( var i = 0; i < questionBank[currentQuestion].choices.length; i++) {
@@ -157,44 +161,44 @@ function play(){
         questionChoices.appendChild(anchorTag);
         choiceOption.setAttribute("data-choice", eachChoice);
       };
-  
 
-    
-    // Click:
-      document.getElementById("questionChoices").addEventListener("click", function(e) {
-          if(e.target && e.target.nodeName == "LI") {
-        // Set the player's choice:
-          var currentChoice = e.target.dataset.choice
-          console.log(`On currentQuestion: ${currentQuestion}, Answered: ${currentChoice}`);
-        // Check the Answer:
-          if(currentChoice == currentAnswer){
-            score++;
-            // TODO: Show a "correct!" message
-          } else {
-            // TODO: Show a "wrong!" message
-          };
-
-        // Run next Steps:
-          determineNextSteps()
-        };
-      });
-      
-      function determineNextSteps(){
-        //Clear the Answer Choices
-          var choicesUL = document.getElementById("questionChoices");
-          while (choicesUL.firstChild) {
-            choicesUL.removeChild(choicesUL.firstChild);
-          };
-
-      //Determine if this was the last question:  
-        if(currentQuestion == lastQuestionPlusOne) {
-          gameOver()
-        } else {
-          currentQuestion++;
-          displayQuestions();
-        }; 
-      };
     };
+
+    // Click:
+    document.getElementById("questionChoices").addEventListener("click", function(e) {
+      if(e.target && e.target.nodeName == "LI") {
+    // Set the player's choice:
+      var currentChoice = e.target.dataset.choice
+      console.log(`On currentQuestion: ${currentQuestion}, Answered: ${currentChoice}`);
+    // Check the Answer:
+      if(currentChoice == currentAnswer){
+        score++;
+        // TODO: Show a "correct!" message
+      } else {
+        // TODO: Show a "wrong!" message
+      };
+
+    // Run next Steps:
+      determineNextSteps()
+    };
+  });
+
+    function determineNextSteps(){
+      //Clear the Answer Choices
+      console.log("determine next steps");
+        var choicesUL = document.getElementById("questionChoices");
+        while (choicesUL.firstChild) {
+          choicesUL.removeChild(choicesUL.firstChild);
+        };
+    //Determine if this was the last question:  
+      if(currentQuestion == lastQuestion) {
+        gameOver()
+      } else {
+        currentQuestion++;
+        displayQuestions();
+      }; 
+    };
+
   };
 
 
@@ -203,8 +207,12 @@ function play(){
     mainTextEL.innerHTML = "How did you do?";
 
     //replay Button
-      startButtonEL.style.display = "block";
-      startButtonEL.innerHTML = "play again";
+      restartButtonEL.style.display = "block";
+      restartButtonEL.onclick = restart;
+
+      function restart() {
+        location.reload();
+      }
     
     // Display Score:
       displayScoreEL.style.display = "block";
