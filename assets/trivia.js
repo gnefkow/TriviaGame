@@ -5,32 +5,57 @@
     var startButtonEL = document.getElementById(`startButton`);
     var questionChoicesEL = document.getElementById(`questionChoices`);
     var timerEL = document.getElementById(`timer`);
+    var displayScoreEL = document.getElementById(`display-score`);
+        displayScoreEL.style.display = "none";
 
 //MECHANICS
 
 // QUESTION BANK ---------- ---------- ---------- ---------- ---------- 
 var questionBank = [
  {
-   question : "Beat on the brat. Beat on the brat. Beat on the brat with a...",
-   choices : ["Pork-Pie Hat!", "Baseball Bat!"],
-   correctAnswer: "Baseball Bat!"
+   question : "0. I don't practice Santaria",
+   choices : ["I ain't got no crystal ball", "When my back's against the wall", "If I'm about to fall"],
+   correctAnswer: "I ain't got no crystal ball"
  },
  {
-  question : "A message to you",
-  choices : ["Tony", "Baby", "Rudy"],
-  correctAnswer: "Rudy"
+    question : "1. A message to you",
+    choices : ["Tony", "Baby", "Rudy"],
+    correctAnswer: "Rudy"
   },
   {
-    question : "The Guns of...",
+    question : "2. The Guns of...",
     choices : ["The gangster", "Navarone", "Rudy"],
     correctAnswer: "Navarone"
   },
   {
-    question : "sfgf",
-    choices : ["asfg", "asg", "asfg"],
-    correctAnswer: "asge"
+    question : "3. Celebrate the",
+    choices : ["Bullet", "Good Times", "Rudeboys"],
+    correctAnswer: "Bullet"
+    },
+    {
+      question : "4. Why must you record my phone calls?",
+      choices : ["Are you trying to find me?", "Are you planning a bootleg LP?", "This is a message to you!"],
+      correctAnswer: "Are you planning a bootleg LP?"
+    },
+    {
+      question : "5. You're too nice...",
+      choices : ["...for your own good.", "...to be my friend.", "...to talk to."],
+      correctAnswer: "..to talk to."
+    },
+    {
+      question : "6. Spanish songs in...",
+      choices : ["Puerta Vallarta", "Andalucía", "Ana Garcia"],
+      correctAnswer: "Andalucía"
+      },
+  {
+    question : "7. Sound system gonna bring me back up, right...",
+    choices : ["In this bad town!", "One thing that I can depend on!", "In a better place, in a better time"],
+    correctAnswer: "One thing that I can depend on!"
   }
 ];
+
+// POINTS COUNTER
+var score;
 
 // TIMER ---------- ---------- ---------- ---------- ---------- 
   var intervalID;  
@@ -68,7 +93,10 @@ var questionBank = [
 function startPage() {
   // Displays Intro Text:
     mainTextEL.innerHTML = "Click to Start Game";
+  
+  //Hide Unneeded DOM Elements:
     questionChoices.style.display = "none";
+
   // START BUTTON STARTS THE GAME (calls the startGame function):
     startButtonEL.onclick = startGame;
   };
@@ -76,11 +104,11 @@ function startPage() {
 
   // ----- ----- ---------- START THE GAME: ---------- ----- ----- //
   function startGame() { 
-    console.log("START!")
+
    // Hide the "Start Page" or "Game Over" pages:
       startButtonEL.style.display = "none";
 
-  // Start the CLock:    
+  // Start the Clock:    
       runClock();
       countDown();
       timerEL.style.display = "block";
@@ -89,28 +117,34 @@ function startPage() {
      questionChoicesEL.style.display = "block";
 
   // Start the Game:
-      displayQuestions();
+      play();
   };
 
 
 // ---------- ---------- DISPLAY QUESTIONS ---------- ---------- //
-
+function play(){
 // Set the initial Question Number:
   var currentQuestion = 0;
 
+// Set initial score
+  score = 0;
+  displayScoreEL.style.display = "none";
+
 // Set the maximum question number:
   var lastQuestionPlusOne = questionBank.length;
+ 
+// Show the Questions:
+  displayQuestions();
 
 // User can answer questions:
   function displayQuestions() {
-    console.log(`Current question ${currentQuestion}`);
 
     //Display Question:
       mainTextEL.textContent = questionBank[currentQuestion].question;
 
     //Set Current Answer:
       var currentAnswer = questionBank[currentQuestion].correctAnswer;
-      console.log(`The answer should be: ${currentAnswer}`);
+      // console.log(`The answer should be: ${currentAnswer}`);
 
     // Create Answers in the DOM:
       for( var i = 0; i < questionBank[currentQuestion].choices.length; i++) {
@@ -124,29 +158,43 @@ function startPage() {
         choiceOption.setAttribute("data-choice", eachChoice);
       };
   
-    // Increase the "currentQuestion" counter
-      currentQuestion++;
+
     
-    // Determine whether it was the right answer:
+    // Click:
       document.getElementById("questionChoices").addEventListener("click", function(e) {
-        if(e.target && e.target.nodeName == "LI") {
+          if(e.target && e.target.nodeName == "LI") {
         // Set the player's choice:
           var currentChoice = e.target.dataset.choice
-        //Check the Answer:
+          console.log(`On currentQuestion: ${currentQuestion}, Answered: ${currentChoice}`);
+        // Check the Answer:
           if(currentChoice == currentAnswer){
-            console.log("Got it right!")
+            score++;
+            // TODO: Show a "correct!" message
           } else {
-            console.log("got it wrong")
+            // TODO: Show a "wrong!" message
           };
 
-      // Determine if this was the last question:  
+        // Run next Steps:
+          determineNextSteps()
+        };
+      });
+      
+      function determineNextSteps(){
+        //Clear the Answer Choices
+          var choicesUL = document.getElementById("questionChoices");
+          while (choicesUL.firstChild) {
+            choicesUL.removeChild(choicesUL.firstChild);
+          };
+
+      //Determine if this was the last question:  
         if(currentQuestion == lastQuestionPlusOne) {
           gameOver()
         } else {
-          displayQuestions()
+          currentQuestion++;
+          displayQuestions();
         }; 
-      }
-    });
+      };
+    };
   };
 
 
@@ -155,8 +203,12 @@ function startPage() {
     mainTextEL.innerHTML = "How did you do?";
 
     //replay Button
-    startButtonEL.style.display = "block";
-    startButtonEL.innerHTML = "play again";
+      startButtonEL.style.display = "block";
+      startButtonEL.innerHTML = "play again";
+    
+    // Display Score:
+      displayScoreEL.style.display = "block";
+      displayScoreEL.textContent = `You got ${score} out of ${questionBank.length}!`
 
     //Hide Game Play Elements:
       timerEL.style.display = "none";
