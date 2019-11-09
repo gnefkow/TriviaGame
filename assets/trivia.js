@@ -3,54 +3,34 @@
 //DOM ELEMENTS
     var mainTextEL = document.getElementById(`mainText`);
     var startButtonEL = document.getElementById(`startButton`);
-    var questionChoices = document.getElementById(`questionChoices`);
+    var questionChoicesEL = document.getElementById(`questionChoices`);
     var timerEL = document.getElementById(`timer`);
 
 //MECHANICS
 
 // QUESTION BANK ---------- ---------- ---------- ---------- ---------- 
-var questionBank = {
-  1 : [
-    "Beat on the brat. Beat on the brat. Beat on the brat with a...",
-    "Pork-Pie Hat!",
-    "Baseball Bat!",
-    1
-  ],
-  "2" : [
-    "A message to you",
-    "Tony",
-    "Baby",
-    "Rudy",
-    3
-  ],
-  "3" : [
-    "The Guns of...",
-    "The gangsters",
-    "Navarone",
-    "Rudy",
-    2
-  ]
-};
-
-//Generate Question Arrays
-  //Create an open array for everything:
-    var questionNumber = [];
-  
-  // Generate the number of questions based off of the Question Bank Object:
-  for (var key in questionBank) {
-    if (questionBank.hasOwnProperty(key)) {
-      questionNumber.push(key);
-      questionNumber.push(questionBank[key]);
-    };
-  };
-
-  // for (var i = 0; i < questionNumbers.length; i++) {
-  //     var currentQuestion = questionNumbers[i];
-  //     var question = questionBank.currentQuestion;
-  //   // currentQuestion.push(i);
-
-  // }
-    
+var questionBank = [
+ {
+   question : "Beat on the brat. Beat on the brat. Beat on the brat with a...",
+   choices : ["Pork-Pie Hat!", "Baseball Bat!"],
+   correctAnswer: "Baseball Bat!"
+ },
+ {
+  question : "A message to you",
+  choices : ["Tony", "Baby", "Rudy"],
+  correctAnswer: "Rudy"
+  },
+  {
+    question : "The Guns of...",
+    choices : ["The gangster", "Navarone", "Rudy"],
+    correctAnswer: "Navarone"
+  },
+  {
+    question : "sfgf",
+    choices : ["asfg", "asg", "asfg"],
+    correctAnswer: "asge"
+  }
+];
 
 // TIMER ---------- ---------- ---------- ---------- ---------- 
   var intervalID;  
@@ -59,7 +39,7 @@ var questionBank = {
 
   function runClock() {
     if (!clockRunning){
-      timeLeft = 40;  //set the timer here
+      timeLeft = 100;  //set the timer here
       intervalId = setInterval(countDown, 1000);
       clockRunning = true;
       };
@@ -94,7 +74,7 @@ function startPage() {
   };
 
 
-  // ----- ----- START THE GAME: ----- ----- //
+  // ----- ----- ---------- START THE GAME: ---------- ----- ----- //
   function startGame() { 
     console.log("START!")
    // Hide the "Start Page" or "Game Over" pages:
@@ -104,6 +84,9 @@ function startPage() {
       runClock();
       countDown();
       timerEL.style.display = "block";
+  
+  // Display answer choice div:
+     questionChoicesEL.style.display = "block";
 
   // Start the Game:
       displayQuestions();
@@ -111,33 +94,60 @@ function startPage() {
 
 
 // ---------- ---------- DISPLAY QUESTIONS ---------- ---------- //
-var questionNumberPlay;
-function displayQuestions(){
-  //Display Question:
-    mainTextEL.innerHTML = questionNumber[1][0];
- // Display answer choices:
-     questionChoices.style.display = "block";
 
-};
+// Set the initial Question Number:
+  var currentQuestion = 0;
 
-    
-    
-    
+// Set the maximum question number:
+  var lastQuestionPlusOne = questionBank.length;
 
+// User can answer questions:
+  function displayQuestions() {
+    console.log(`Current question ${currentQuestion}`);
 
+    //Display Question:
+      mainTextEL.textContent = questionBank[currentQuestion].question;
 
+    //Set Current Answer:
+      var currentAnswer = questionBank[currentQuestion].correctAnswer;
+      console.log(`The answer should be: ${currentAnswer}`);
 
+    // Create Answers in the DOM:
+      for( var i = 0; i < questionBank[currentQuestion].choices.length; i++) {
+        var eachChoice = questionBank[currentQuestion].choices[i];
+        var anchorTag = document.createElement("a");
+        var choiceOption = document.createElement("li");
+        choiceOption.textContent = eachChoice;
+        choiceOption.classList.add("choiceOption");
+        anchorTag.appendChild(choiceOption);
+        questionChoices.appendChild(anchorTag);
+        choiceOption.setAttribute("data-choice", eachChoice);
+      };
   
-  //Question
-    // Display Question Text
-    // Display answer text
-      //if an answer is clicked:
-        //  record the answer
-          // record if the answer was correct
-          // display a success message if the answer was correct
-          // display an unsuccessful message if the answer was incorrect
+    // Increase the "currentQuestion" counter
+      currentQuestion++;
+    
+    // Determine whether it was the right answer:
+      document.getElementById("questionChoices").addEventListener("click", function(e) {
+        if(e.target && e.target.nodeName == "LI") {
+        // Set the player's choice:
+          var currentChoice = e.target.dataset.choice
+        //Check the Answer:
+          if(currentChoice == currentAnswer){
+            console.log("Got it right!")
+          } else {
+            console.log("got it wrong")
+          };
 
-  
+      // Determine if this was the last question:  
+        if(currentQuestion == lastQuestionPlusOne) {
+          gameOver()
+        } else {
+          displayQuestions()
+        }; 
+      }
+    });
+  };
 
 
 // ---------- ---------- GAMEOVER ---------- ---------- //
