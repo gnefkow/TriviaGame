@@ -7,5 +7,6 @@
 <h1> To Do's </h1>
 <hr>
 <ul>
-  <li>Styling</li>
+  <li>Right/wrong messaging</li>
+  <li>Styling Clean-up</li>
   </ul>

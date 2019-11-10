@@ -7,51 +7,54 @@
         restartButtonEL.style.display = "none";
     var questionChoicesEL = document.getElementById(`questionChoices`);
     var timerEL = document.getElementById(`timer`);
+    timerEL.style.display = "none";
     var displayScoreEL = document.getElementById(`display-score`);
         displayScoreEL.style.display = "none";
+    var messageToast = document.getElementById("messageToast");
     
 
-//MECHANICS
+
+    //MECHANICS
 
 // QUESTION BANK ---------- ---------- ---------- ---------- ---------- 
 var questionBank = [
  {
-   question : "0. I don't practice Santaria",
+   question : "I don't practice Santaria",
    choices : ["I ain't got no crystal ball", "When my back's against the wall", "If I'm about to fall"],
    correctAnswer: "I ain't got no crystal ball"
  },
  {
-    question : "1. A message to you",
+    question : "A message to you",
     choices : ["Tony", "Baby", "Rudy"],
     correctAnswer: "Rudy"
   },
   {
-    question : "2. The Guns of...",
+    question : "The Guns of...",
     choices : ["The gangster", "Navarone", "Rudy"],
     correctAnswer: "Navarone"
   },
   {
-    question : "3. Celebrate the",
+    question : "Celebrate the",
     choices : ["Bullet", "Good Times", "Rudeboys"],
     correctAnswer: "Bullet"
     },
     {
-      question : "4. Why must you record my phone calls?",
+      question : "Why must you record my phone calls?",
       choices : ["Are you trying to find me?", "Are you planning a bootleg LP?", "This is a message to you!"],
       correctAnswer: "Are you planning a bootleg LP?"
     },
     {
-      question : "5. You're too nice...",
+      question : "You're too nice...",
       choices : ["...for your own good.", "...to be my friend.", "...to talk to."],
-      correctAnswer: "..to talk to."
+      correctAnswer: "...to talk to."
     },
     {
-      question : "6. Spanish songs in...",
+      question : "Spanish songs in...",
       choices : ["Puerta Vallarta", "Andalucía", "Ana Garcia"],
       correctAnswer: "Andalucía"
       },
   {
-    question : "7. Sound system gonna bring me back up, right...",
+    question : "Sound system gonna bring me back up, right...",
     choices : ["In this bad town!", "One thing that I can depend on!", "In a better place, in a better time"],
     correctAnswer: "One thing that I can depend on!"
   }
@@ -67,7 +70,7 @@ var score;
 
   function runClock() {
     if (!clockRunning){
-      timeLeft = 100;  //set the timer here
+      timeLeft = 30;  //set the timer here
       intervalId = setInterval(countDown, 1000);
       clockRunning = true;
       };
@@ -79,7 +82,7 @@ var score;
 
   function countDown() {
     timeLeft--;
-    timerEL.innerHTML = `<h2>${timeLeft}</h2>`;
+    timerEL.textContent = timeLeft;
     if(timeLeft === 0) {
       clockRunning = false;
       stopClock();
@@ -125,6 +128,7 @@ function startPage() {
 
 
 // ---------- ---------- DISPLAY QUESTIONS ---------- ---------- //
+// var currentAnswer
 function play(){
 // Set the initial Question Number:
   var currentQuestion = 0;
@@ -135,20 +139,20 @@ function play(){
 
 // Set the maximum question number:
   var lastQuestion = questionBank.length-1;
+  
+  //Set Current Answer:
+  var currentAnswer = questionBank[currentQuestion].correctAnswer;
  
 // Show the Questions:
   displayQuestions();
 
-//Set Current Answer:
-      var currentAnswer = questionBank[currentQuestion].correctAnswer;
+      
 
 // User can answer questions:
   function displayQuestions() {
 
     //Display Question:
       mainTextEL.textContent = questionBank[currentQuestion].question;
-
-
 
     // Create Answers in the DOM:
       for( var i = 0; i < questionBank[currentQuestion].choices.length; i++) {
@@ -169,13 +173,13 @@ function play(){
       if(e.target && e.target.nodeName == "LI") {
     // Set the player's choice:
       var currentChoice = e.target.dataset.choice
-      console.log(`On currentQuestion: ${currentQuestion}, Answered: ${currentChoice}`);
+      console.log(`On currentQuestion: ${currentQuestion}, Answer is: ${currentAnswer}, Answered: ${currentChoice}`);
     // Check the Answer:
       if(currentChoice == currentAnswer){
         score++;
-        // TODO: Show a "correct!" message
+        console.log("correct")
       } else {
-        // TODO: Show a "wrong!" message
+        console.log("incorrect")
       };
 
     // Run next Steps:
@@ -195,6 +199,7 @@ function play(){
         gameOver()
       } else {
         currentQuestion++;
+        currentAnswer = questionBank[currentQuestion].correctAnswer;
         displayQuestions();
       }; 
     };

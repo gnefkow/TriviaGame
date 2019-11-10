@@ -23,30 +23,35 @@
 </head>
 
 <body>
-<div id="wrapper">
 
-  <div id="header-bar">
-    <h1>Do you know the song?</h1>
+<div id="messageToast" class="answerMessage-box"></div>
+<div id=page>
+<div id="wrapper" class="container">
 
+
+    
     <!-- Header Message / Questions will be added here-->
-    <div id="mainText" class="main-text"></div>
-    <button id="startButton" class="btn btn-primary">Start!</button>
-    <button id="restartButton" class="btn btn-primary">Try Again!</button>
+  <div id="mainText" class="main-text col-md-12"></div>
+    <button id="startButton" class="gameButton powerButton">Start!</button>
   </div>
 
   <div id="timer" class="timer"></div>
 
   <!-- Answers will be added here-->
-  <div id="question">
+  
+  <div id="question col-md-12">
     <div><ul id="questionChoices" class="question-choices"></ul></div> 
   </div>
 
   <!-- Score will be added here-->
-  <div id="display-score">
-    <h2></h2>
+  <div>
+    <h2 id="display-score"></h2>
   </div>
+<div>
+    <button id="restartButton" class="gameButton powerButton">Try Again!</button>
+</div>
 
-
+</div>
 </div>
   <script src="assets/trivia.js"></script> 
 </body>

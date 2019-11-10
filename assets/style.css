@@ -1,12 +1,25 @@
-body {
+html, body {
   text-align: center;
+  height: 100%;
+  background-color: black;
+  color: white;
 }
 
 .main-text {
-  font-size: 3em;
-  color: blue;
+  font-size: 4em;
+  margin-top: 20%;
+  margin-bottom: 1.5em;
+  text-shadow: 0px 0px 3px rgba(150, 150, 150, 1);
 }
 
+#page{
+  height: 100%;
+  width: 100%;
+  background-image: url("Images/background.jpg");
+  background-repeat: no-repeat;
+  background-size: auto 100%;
+  background-position: center center;
+}
 .wrapper {
   width: 80%;
   margin-left: auto;
@@ -19,14 +32,84 @@ body {
 }
 
 .choiceOption {
-  padding: 2em;
-  width: 40%;
+  padding: 1.5em;
+  font-size: 2em;
+  width: 80%;
   margin-bottom: 1em;
+  background-color: rgba(0, 0, 0, 0.9);
+  color: white;
+  -webkit-box-shadow: 6px 6px 15px 0px rgba(50, 50, 50, 0.8);
+  -moz-box-shadow:    6px 6px 15px 0px rgba(50, 50, 50, 0.8);
+  box-shadow:         6px 6px 15px 0px rgba(50, 50, 50, 0.8);
+}
+
+.choiceOption:active {
+  background-color: #ddd;
+}
+
+.gameButton {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.question{
+width: 100%;
+}
+
+li {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.timer {
+  font-size: 2em;
+  color: white;
+  z-index: 1;
+  position: fixed;
+  bottom: 5%;
+  right: 0;
+  padding: 1em;
+  width:  3em;
+  
+  background-color: rgba(177, 0, 0, 0.774);
   -webkit-box-shadow: 6px 6px 15px 0px rgba(50, 50, 50, 0.23);
   -moz-box-shadow:    6px 6px 15px 0px rgba(50, 50, 50, 0.23);
   box-shadow:         6px 6px 15px 0px rgba(50, 50, 50, 0.23);
 }
 
-.choiceOption:active {
-  background-color: #ddd;
+.answerMessage-box {
+  position: fixed;
+  z-index: 1;
+  width: 90%;
+  background-color: green;
+  color: white;
+  border-radius: 2em;
+  text-align: center;
+  top: 1em;
+  margin-right: auto;
+  margin-left: auto;
+  -webkit-box-shadow: 6px 6px 15px 0px rgba(50, 50, 50, 0.23);
+  -moz-box-shadow:    6px 6px 15px 0px rgba(50, 50, 50, 0.23);
+  box-shadow:         6px 6px 15px 0px rgba(50, 50, 50, 0.23);
+}
+
+
+.powerButton {
+  font-size: 3em;
+  padding: .7em;
+  width: 70%;
+  border-radius: .5em;
+  border-color: rgba(185, 7, 7, 0.774);
+  color: white;
+  background-color: rgba(177, 0, 0, 0.774);
+  -webkit-box-shadow: 6px 6px 15px 0px rgba(50, 50, 50, 0.23);
+  -moz-box-shadow:    6px 6px 15px 0px rgba(50, 50, 50, 0.23);
+  box-shadow:         6px 6px 15px 0px rgba(50, 50, 50, 0.23);
+}
+
+#display-score {
+  font-size: 3em;
+  color: white;
+  margin-bottom: 4em;
+  text-shadow: 0px 0px 3px rgba(150, 150, 150, 1);
 }
